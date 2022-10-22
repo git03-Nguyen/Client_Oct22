@@ -15,6 +15,7 @@ public class RemoteGUI extends javax.swing.JFrame {
      */
     public RemoteGUI() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
