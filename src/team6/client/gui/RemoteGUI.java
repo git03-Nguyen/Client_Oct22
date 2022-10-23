@@ -1,4 +1,4 @@
-package com.nda.client.gui;
+package team6.client.gui;
 
 public class RemoteGUI extends javax.swing.JFrame {
 

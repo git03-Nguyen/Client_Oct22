@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.nda.client.gui;
+package team6.client.gui;
 
 import java.awt.Dimension;
 import javax.swing.JButton;
@@ -50,7 +50,6 @@ public class HomeGUI extends javax.swing.JFrame {
         AddNewGUI.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         AddNewGUI.setTitle("Add Connection");
         AddNewGUI.setBounds(new java.awt.Rectangle(0, 0, 333, 200));
-        AddNewGUI.setPreferredSize(new java.awt.Dimension(331, 200));
         AddNewGUI.setResizable(false);
         AddNewGUI.setSize(333, 200);
         AddNewGUI.addWindowListener(new java.awt.event.WindowAdapter() {
