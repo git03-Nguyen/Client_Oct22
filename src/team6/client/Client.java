@@ -1,12 +1,8 @@
-package com.nda.client;
+package team6.client;
 
-/**
- *
- * @author Administrator
- */
-import com.nda.client.gui.*;
+import team6.client.gui.*;
 
-public class Main {
+public class Client {
     
     public static void main(String[] args) {
         System.out.println("App is running ...");
@@ -36,15 +32,18 @@ public class Main {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new HomeGUI().setVisible(true);
+                try {
+                    HomeGUI homeGUI = new HomeGUI();
+                    homeGUI.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-        
-        
     }
 }
 
-// Day la dsalkjdlsajdl;sa
 
 
