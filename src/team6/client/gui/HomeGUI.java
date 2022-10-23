@@ -1,16 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package team6.client.gui;
 
-import java.awt.Dimension;
-import javax.swing.JButton;
-
-/**
- *
- * @author Administrator
- */
 public class HomeGUI extends javax.swing.JFrame {
 
     /**
