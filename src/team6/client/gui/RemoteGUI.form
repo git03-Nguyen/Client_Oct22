@@ -2,7 +2,7 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -55,7 +55,7 @@
                       <Component id="btnStartProc" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="175" max="-2" attributes="0"/>
                       <Component id="btnSaveProc" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="166" max="32767" attributes="0"/>
+                      <EmptySpace pref="191" max="32767" attributes="0"/>
                       <Component id="btnEndProc" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   </Group>
@@ -89,7 +89,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnStartProc">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Start new process"/>
+                <Property name="text" type="java.lang.String" value="Start process"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnSaveProc">

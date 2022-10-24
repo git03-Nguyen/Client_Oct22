@@ -1,10 +1,38 @@
 package team6.client.gui;
 
-public class RemoteGUI extends javax.swing.JFrame {
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.net.Socket;
+import java.util.List;
 
-    public RemoteGUI() {
+public class RemoteGUI extends javax.swing.JFrame {
+    
+    private Thread thread;
+    private Socket socket;
+    private int id;
+
+    public RemoteGUI(Socket socket, int id) {
         initComponents();
         this.setLocationRelativeTo(null);
+        
+        
+        thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    setSocket(socket);
+                    setID(id);
+                    setTitle("COM" + id);
+                    
+                }
+                catch(Exception e) {
+                    
+                }
+            }
+        };
+        thread.run();
+        
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -45,12 +73,12 @@ public class RemoteGUI extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         btnEndProc.setText("End process");
 
-        btnStartProc.setText("Start new process");
+        btnStartProc.setText("Start process");
 
         btnSaveProc.setText("Save logs");
         btnSaveProc.addActionListener(new java.awt.event.ActionListener() {
@@ -86,7 +114,7 @@ public class RemoteGUI extends javax.swing.JFrame {
                 .addComponent(btnStartProc)
                 .addGap(175, 175, 175)
                 .addComponent(btnSaveProc)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 191, Short.MAX_VALUE)
                 .addComponent(btnEndProc)
                 .addGap(29, 29, 29))
             .addGroup(pnlProcessLayout.createSequentialGroup()
@@ -363,6 +391,13 @@ public class RemoteGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSaveProcActionPerformed
 
+    private void setID(int id) {
+        this.id = id;
+    }
+    
+    private void setSocket(Socket socket) {
+        this.socket = socket;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChangeDir;

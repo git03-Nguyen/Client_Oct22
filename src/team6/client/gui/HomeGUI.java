@@ -1,6 +1,14 @@
 package team6.client.gui;
 
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 public class HomeGUI extends javax.swing.JFrame {
+    private Socket socket;
+    private List<RemoteGUI> remoteGUI;
+    private int id;
 
     /**
      * Creates new form HostGUI
@@ -8,8 +16,12 @@ public class HomeGUI extends javax.swing.JFrame {
     public HomeGUI() {
         initComponents();
         this.setLocationRelativeTo(null);
+        remoteGUI = new ArrayList<>();
+        id = -1;
     }
 
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,7 +43,7 @@ public class HomeGUI extends javax.swing.JFrame {
         lblAppName = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         pnlCenter = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnCom1 = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
         btnDisAll = new javax.swing.JButton();
@@ -115,7 +127,7 @@ public class HomeGUI extends javax.swing.JFrame {
                 .addContainerGap(58, Short.MAX_VALUE))
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Home");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -128,11 +140,11 @@ public class HomeGUI extends javax.swing.JFrame {
         lblAppName.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblAppName.setText("Remote Control Application");
 
-        jButton1.setBackground(new java.awt.Color(0, 153, 51));
-        jButton1.setText("COM1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCom1.setBackground(new java.awt.Color(0, 153, 51));
+        btnCom1.setText("COM1");
+        btnCom1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCom1ActionPerformed(evt);
             }
         });
 
@@ -142,16 +154,18 @@ public class HomeGUI extends javax.swing.JFrame {
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addComponent(jButton1)
+                .addComponent(btnCom1)
                 .addContainerGap(535, Short.MAX_VALUE))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addGap(39, 39, 39)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCom1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(197, Short.MAX_VALUE))
         );
+
+        btnCom1.setVisible(false);
 
         btnAdd.setText("Add New");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -238,22 +252,41 @@ public class HomeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
-        
+        try {
+            String ipHost = tfIPHost.getText();
+            int port = Integer.parseInt(tfPort.getText());
+            try {
+                 socket = new Socket(ipHost, port);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(rootPane, "Có lỗi xảy ra");
+                return;
+            }
+           
+            remoteGUI.add(new RemoteGUI(socket, ++id));
+            System.out.println("COM" + id + " connected!");
+            
+            btnCom1.setVisible(true);
+            
+            AddNewGUI.setVisible(false);
+            AddNewGUI.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "Có lỗi xảy ra");
+        }
     }//GEN-LAST:event_btnConnectActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        RemoteGUI remoteGUI = new RemoteGUI();
-        remoteGUI.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnCom1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCom1ActionPerformed
+        remoteGUI.get(0).setVisible(true);
+    }//GEN-LAST:event_btnCom1ActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFrame AddNewGUI;
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnCom1;
     private javax.swing.JButton btnConnect;
     private javax.swing.JButton btnDisAll;
     private javax.swing.JButton btnRefresh;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
