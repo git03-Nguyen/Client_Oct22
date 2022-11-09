@@ -1,38 +1,13 @@
 package team6.client.gui;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.net.Socket;
-import java.util.List;
+import team6.client.socket.SocketHandler;
 
-public class RemoteGUI extends javax.swing.JFrame {
-    
-    private Thread thread;
-    private Socket socket;
-    private int id;
+public class ControlGUI extends javax.swing.JFrame {
+    public SocketHandler socketHandler;
 
-    public RemoteGUI(Socket socket, int id) {
+    public ControlGUI(SocketHandler socketHandler) {
         initComponents();
-        this.setLocationRelativeTo(null);
-        
-        
-        thread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    setSocket(socket);
-                    setID(id);
-                    setTitle("COM" + id);
-                    
-                }
-                catch(Exception e) {
-                    
-                }
-            }
-        };
-        thread.run();
-        
-        
+        this.socketHandler = socketHandler;
     }
 
     @SuppressWarnings("unchecked")
@@ -65,7 +40,7 @@ public class RemoteGUI extends javax.swing.JFrame {
         pnlSystemInfo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtSystemInfo = new javax.swing.JTextArea();
         pnlSystemCmd = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -81,11 +56,6 @@ public class RemoteGUI extends javax.swing.JFrame {
         btnStartProc.setText("Start process");
 
         btnSaveProc.setText("Save logs");
-        btnSaveProc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveProcActionPerformed(evt);
-            }
-        });
 
         tblProcess.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -159,11 +129,6 @@ public class RemoteGUI extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tblApp);
 
         btnEndApp.setText("End application");
-        btnEndApp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEndAppActionPerformed(evt);
-            }
-        });
 
         btnStartApp.setText("Start application");
 
@@ -285,10 +250,10 @@ public class RemoteGUI extends javax.swing.JFrame {
 
         jLabel1.setText("COM System Information:");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtSystemInfo.setEditable(false);
+        txtSystemInfo.setColumns(20);
+        txtSystemInfo.setRows(5);
+        jScrollPane1.setViewportView(txtSystemInfo);
 
         javax.swing.GroupLayout pnlSystemInfoLayout = new javax.swing.GroupLayout(pnlSystemInfo);
         pnlSystemInfo.setLayout(pnlSystemInfoLayout);
@@ -383,22 +348,6 @@ public class RemoteGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEndAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndAppActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEndAppActionPerformed
-
-    private void btnSaveProcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveProcActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSaveProcActionPerformed
-
-    private void setID(int id) {
-        this.id = id;
-    }
-    
-    private void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChangeDir;
     private javax.swing.JButton btnClearKey;
@@ -420,7 +369,6 @@ public class RemoteGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel pnlApp;
     private javax.swing.JPanel pnlCenterMonitor;
     private javax.swing.JPanel pnlKeylog;
@@ -433,5 +381,6 @@ public class RemoteGUI extends javax.swing.JFrame {
     private javax.swing.JTable tblApp;
     private javax.swing.JTable tblProcess;
     private javax.swing.JTextArea txtKeylog;
+    private javax.swing.JTextArea txtSystemInfo;
     // End of variables declaration//GEN-END:variables
 }

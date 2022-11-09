@@ -1,27 +1,20 @@
 package team6.client.gui;
 
-import java.net.Socket;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import team6.client.socket.SocketHandler;
 
 public class HomeGUI extends javax.swing.JFrame {
-    private Socket socket;
-    private List<RemoteGUI> remoteGUI;
-    private int id;
+    private List<ControlGUI> controlGUI;
+    private int currentSelection;
 
-    /**
-     * Creates new form HostGUI
-     */
     public HomeGUI() {
         initComponents();
-        this.setLocationRelativeTo(null);
-        remoteGUI = new ArrayList<>();
-        id = -1;
+        initControlGUI();
     }
 
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,38 +24,45 @@ public class HomeGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        AddNewGUI = new javax.swing.JFrame();
+        LoginGUI = new javax.swing.JFrame();
         jLabel1 = new javax.swing.JLabel();
-        tfIPHost = new javax.swing.JTextField();
+        tfHost = new javax.swing.JTextField();
         tfPort = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnConnect = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
+        btnGroupCOM = new javax.swing.ButtonGroup();
         pnlMain = new javax.swing.JPanel();
         lblAppName = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         pnlCenter = new javax.swing.JPanel();
-        btnCom1 = new javax.swing.JButton();
+        btnCOM0 = new javax.swing.JToggleButton();
+        btnCOM1 = new javax.swing.JToggleButton();
+        btnCOM2 = new javax.swing.JToggleButton();
+        btnCOM3 = new javax.swing.JToggleButton();
+        btnCOM4 = new javax.swing.JToggleButton();
+        btnCOM5 = new javax.swing.JToggleButton();
         btnAdd = new javax.swing.JButton();
-        btnRefresh = new javax.swing.JButton();
-        btnDisAll = new javax.swing.JButton();
+        btnDisconnect = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
+        btnControl = new javax.swing.JButton();
 
-        AddNewGUI.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        AddNewGUI.setTitle("Add Connection");
-        AddNewGUI.setBounds(new java.awt.Rectangle(0, 0, 333, 200));
-        AddNewGUI.setResizable(false);
-        AddNewGUI.setSize(333, 200);
-        AddNewGUI.addWindowListener(new java.awt.event.WindowAdapter() {
+        LoginGUI.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        LoginGUI.setTitle("Add Connection");
+        LoginGUI.setBounds(new java.awt.Rectangle(0, 0, 333, 200));
+        LoginGUI.setResizable(false);
+        LoginGUI.setSize(333, 200);
+        LoginGUI.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
-                AddNewGUIWindowClosing(evt);
+                LoginGUIWindowClosing(evt);
             }
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Add new connection");
 
-        tfIPHost.setText("127.0.0.1");
+        tfHost.setText("127.0.0.1");
 
         tfPort.setText("9888");
 
@@ -77,55 +77,61 @@ public class HomeGUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout AddNewGUILayout = new javax.swing.GroupLayout(AddNewGUI.getContentPane());
-        AddNewGUI.getContentPane().setLayout(AddNewGUILayout);
-        AddNewGUILayout.setHorizontalGroup(
-            AddNewGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddNewGUILayout.createSequentialGroup()
+        javax.swing.GroupLayout LoginGUILayout = new javax.swing.GroupLayout(LoginGUI.getContentPane());
+        LoginGUI.getContentPane().setLayout(LoginGUILayout);
+        LoginGUILayout.setHorizontalGroup(
+            LoginGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginGUILayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(66, 66, 66))
-            .addGroup(AddNewGUILayout.createSequentialGroup()
+            .addGroup(LoginGUILayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jSeparator2)
                 .addContainerGap())
-            .addGroup(AddNewGUILayout.createSequentialGroup()
+            .addGroup(LoginGUILayout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(AddNewGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(LoginGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(AddNewGUILayout.createSequentialGroup()
+                    .addGroup(LoginGUILayout.createSequentialGroup()
                         .addGap(57, 57, 57)
-                        .addGroup(AddNewGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfIPHost, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(AddNewGUILayout.createSequentialGroup()
+                        .addGroup(LoginGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfHost, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(LoginGUILayout.createSequentialGroup()
                                 .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                                 .addComponent(btnConnect)))))
                 .addGap(44, 44, 44))
         );
-        AddNewGUILayout.setVerticalGroup(
-            AddNewGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddNewGUILayout.createSequentialGroup()
+        LoginGUILayout.setVerticalGroup(
+            LoginGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginGUILayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(AddNewGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(AddNewGUILayout.createSequentialGroup()
-                        .addGroup(AddNewGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(LoginGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(LoginGUILayout.createSequentialGroup()
+                        .addGroup(LoginGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(tfIPHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(tfHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(AddNewGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(LoginGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(AddNewGUILayout.createSequentialGroup()
+                    .addGroup(LoginGUILayout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(btnConnect, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
+
+        btnGroupCOM.add(btnCOM0);
+        btnGroupCOM.add(btnCOM1);
+        btnGroupCOM.add(btnCOM2);
+        btnGroupCOM.add(btnCOM3);
+        btnGroupCOM.add(btnCOM4);
+        btnGroupCOM.add(btnCOM5);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Home");
@@ -140,32 +146,55 @@ public class HomeGUI extends javax.swing.JFrame {
         lblAppName.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblAppName.setText("Remote Control Application");
 
-        btnCom1.setBackground(new java.awt.Color(0, 153, 51));
-        btnCom1.setText("COM1");
-        btnCom1.addActionListener(new java.awt.event.ActionListener() {
+        pnlCenter.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnCOM0.setText("COM0");
+        btnCOM0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCom1ActionPerformed(evt);
+                btnCOM0ActionPerformed(evt);
             }
         });
+        pnlCenter.add(btnCOM0, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 120));
 
-        javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
-        pnlCenter.setLayout(pnlCenterLayout);
-        pnlCenterLayout.setHorizontalGroup(
-            pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCenterLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(btnCom1)
-                .addContainerGap(535, Short.MAX_VALUE))
-        );
-        pnlCenterLayout.setVerticalGroup(
-            pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCenterLayout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(btnCom1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(197, Short.MAX_VALUE))
-        );
+        btnCOM1.setText("COM1");
+        btnCOM1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCOM1ActionPerformed(evt);
+            }
+        });
+        pnlCenter.add(btnCOM1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 120, 120));
 
-        btnCom1.setVisible(false);
+        btnCOM2.setText("COM2");
+        btnCOM2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCOM2ActionPerformed(evt);
+            }
+        });
+        pnlCenter.add(btnCOM2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, 120, 120));
+
+        btnCOM3.setText("COM3");
+        btnCOM3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCOM3ActionPerformed(evt);
+            }
+        });
+        pnlCenter.add(btnCOM3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 120, 120));
+
+        btnCOM4.setText("COM4");
+        btnCOM4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCOM4ActionPerformed(evt);
+            }
+        });
+        pnlCenter.add(btnCOM4, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, 120, 120));
+
+        btnCOM5.setText("COM5");
+        btnCOM5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCOM5ActionPerformed(evt);
+            }
+        });
+        pnlCenter.add(btnCOM5, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 180, 120, 120));
 
         btnAdd.setText("Add New");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -174,9 +203,19 @@ public class HomeGUI extends javax.swing.JFrame {
             }
         });
 
-        btnRefresh.setText("Refresh");
+        btnDisconnect.setText("Disconnect");
+        btnDisconnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDisconnectActionPerformed(evt);
+            }
+        });
 
-        btnDisAll.setText("Disconnect All");
+        btnControl.setText("Control");
+        btnControl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnControlActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
@@ -190,20 +229,24 @@ public class HomeGUI extends javax.swing.JFrame {
                     .addGroup(pnlMainLayout.createSequentialGroup()
                         .addGap(218, 218, 218)
                         .addComponent(lblAppName)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 217, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(pnlMainLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(pnlCenter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(btnRefresh)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jSeparator3)
+                .addContainerGap())
+            .addGroup(pnlMainLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
                 .addComponent(btnAdd)
-                .addGap(18, 18, 18)
-                .addComponent(btnDisAll)
-                .addGap(54, 54, 54))
+                .addGap(167, 167, 167)
+                .addComponent(btnControl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDisconnect)
+                .addGap(31, 31, 31))
+            .addGroup(pnlMainLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(pnlCenter, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,14 +256,18 @@ public class HomeGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlCenter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addComponent(pnlCenter, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
-                    .addComponent(btnDisAll)
-                    .addComponent(btnRefresh))
-                .addContainerGap(27, Short.MAX_VALUE))
+                    .addComponent(btnDisconnect)
+                    .addComponent(btnControl, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14))
         );
+
+        btnAdd.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -233,69 +280,187 @@ public class HomeGUI extends javax.swing.JFrame {
             .addComponent(pnlMain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        setVisible(true);
+        System.out.println("HomeGUI is running ...");
+        currentSelection = 0;
+
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void initControlGUI() {
+        controlGUI = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            controlGUI.add(null);
+        }
+    }
+    
+    // Event handlings when click btnAdd
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        AddNewGUI.setLocationRelativeTo(this);
-        AddNewGUI.setVisible(true);
- 
+        LoginGUI.setLocationRelativeTo(this);
+        LoginGUI.setVisible(true);
+        System.out.println("Login window is opening ...");
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void AddNewGUIWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_AddNewGUIWindowClosing
-        tfIPHost.setText("127.0.0.1");
+    // Event handling when closing LoginGUI
+    private void LoginGUIWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_LoginGUIWindowClosing
+        System.out.println("Login window is hiding ... ");
+        tfHost.setText("127.0.0.1");
         tfPort.setText("9888");
-    }//GEN-LAST:event_AddNewGUIWindowClosing
+    }//GEN-LAST:event_LoginGUIWindowClosing
 
+    // Event handling when closing HomeGUI
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        System.out.println("App is closing ....");
+        // Disconnect all
+        System.out.println("HomeGUI is closing ....");        
     }//GEN-LAST:event_formWindowClosing
 
+    // Event handling when clicking btnConnect on LoginGUI
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
+        SocketHandler socketHandler; 
+        String host;
+        int port;
         try {
-            String ipHost = tfIPHost.getText();
-            int port = Integer.parseInt(tfPort.getText());
-            try {
-                 socket = new Socket(ipHost, port);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(rootPane, "Có lỗi xảy ra");
-                return;
-            }
-           
-            remoteGUI.add(new RemoteGUI(socket, ++id));
-            System.out.println("COM" + id + " connected!");
-            
-            btnCom1.setVisible(true);
-            
-            AddNewGUI.setVisible(false);
-            AddNewGUI.dispose();
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(rootPane, "Có lỗi xảy ra");
+            host = tfHost.getText();
+            port = Integer.parseInt(tfPort.getText());
+            socketHandler = new SocketHandler(host, port);
         }
+        catch (NumberFormatException | IOException e) {
+            JOptionPane.showMessageDialog(rootPane, "IP/port is uncorrect!");
+            return;
+        }  
+        // if connected successfully
+        controlGUI.set(currentSelection, new ControlGUI(socketHandler));
+        controlGUI.get(currentSelection).setTitle(host + ":" + Integer.toString(port));
+        LoginGUI.dispose();
     }//GEN-LAST:event_btnConnectActionPerformed
 
-    private void btnCom1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCom1ActionPerformed
-        remoteGUI.get(0).setVisible(true);
-    }//GEN-LAST:event_btnCom1ActionPerformed
+    private void btnControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControlActionPerformed
+        controlGUI.get(currentSelection).setVisible(true);
+    }//GEN-LAST:event_btnControlActionPerformed
 
+    // Event handlings when choosing one COM
+    private void btnCOM0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM0ActionPerformed
+        System.out.println(evt.getActionCommand() + " selected");
+        if (controlGUI.get(0) == null) {
+            btnAdd.setEnabled(true);
+            btnControl.setEnabled(false);
+            btnDisconnect.setEnabled(false);
+            currentSelection = 0;
+        }
+        else {
+            btnAdd.setEnabled(false);
+            btnControl.setEnabled(true);
+            btnDisconnect.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnCOM0ActionPerformed
     
+    private void btnCOM1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM1ActionPerformed
+        System.out.println(evt.getActionCommand() + " selected");
+        if (controlGUI.get(1) == null) {
+            btnAdd.setEnabled(true);
+            btnControl.setEnabled(false);
+            btnDisconnect.setEnabled(false);
+            currentSelection = 1;
+        }
+        else {
+            btnAdd.setEnabled(false);
+            btnControl.setEnabled(true);
+            btnDisconnect.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnCOM1ActionPerformed
+
+    private void btnCOM2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM2ActionPerformed
+        System.out.println(evt.getActionCommand() + " selected");
+        if (controlGUI.get(2) == null) {
+            btnAdd.setEnabled(true);
+            btnControl.setEnabled(false);
+            btnDisconnect.setEnabled(false);
+            currentSelection = 2;
+        }
+        else {
+            btnAdd.setEnabled(false);
+            btnControl.setEnabled(true);
+            btnDisconnect.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnCOM2ActionPerformed
+
+    private void btnCOM3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM3ActionPerformed
+        System.out.println(evt.getActionCommand() + " selected");
+        if (controlGUI.get(3) == null) {
+            btnAdd.setEnabled(true);
+            btnControl.setEnabled(false);
+            btnDisconnect.setEnabled(false);
+            currentSelection = 3;
+        }
+        else {
+            btnAdd.setEnabled(false);
+            btnControl.setEnabled(true);
+            btnDisconnect.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnCOM3ActionPerformed
+
+    private void btnCOM4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM4ActionPerformed
+        System.out.println(evt.getActionCommand() + " selected");
+        if (controlGUI.get(4) == null) {
+            btnAdd.setEnabled(true);
+            btnControl.setEnabled(false);
+            btnDisconnect.setEnabled(false);
+            currentSelection = 4;
+        }
+        else {
+            btnAdd.setEnabled(false);
+            btnControl.setEnabled(true);
+            btnDisconnect.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnCOM4ActionPerformed
+
+    private void btnCOM5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM5ActionPerformed
+        System.out.println(evt.getActionCommand() + " selected");
+        if (controlGUI.get(5) == null) {
+            btnAdd.setEnabled(true);
+            btnControl.setEnabled(false);
+            btnDisconnect.setEnabled(false);
+            currentSelection = 5;
+        }
+        else {
+            btnAdd.setEnabled(false);
+            btnControl.setEnabled(true);
+            btnDisconnect.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnCOM5ActionPerformed
+
+    // Event handling when clicking btnDisconnect
+    private void btnDisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisconnectActionPerformed
+        controlGUI.get(currentSelection).socketHandler.send("<DISC>$<>$<>");
+        controlGUI.get(currentSelection).socketHandler.close();
+        controlGUI.get(currentSelection).dispose();
+        controlGUI.set(currentSelection, null);
+    }//GEN-LAST:event_btnDisconnectActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFrame AddNewGUI;
+    private javax.swing.JFrame LoginGUI;
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnCom1;
+    private javax.swing.JToggleButton btnCOM0;
+    private javax.swing.JToggleButton btnCOM1;
+    private javax.swing.JToggleButton btnCOM2;
+    private javax.swing.JToggleButton btnCOM3;
+    private javax.swing.JToggleButton btnCOM4;
+    private javax.swing.JToggleButton btnCOM5;
     private javax.swing.JButton btnConnect;
-    private javax.swing.JButton btnDisAll;
-    private javax.swing.JButton btnRefresh;
+    private javax.swing.JButton btnControl;
+    private javax.swing.JButton btnDisconnect;
+    private javax.swing.ButtonGroup btnGroupCOM;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JLabel lblAppName;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlMain;
-    private javax.swing.JTextField tfIPHost;
+    private javax.swing.JTextField tfHost;
     private javax.swing.JTextField tfPort;
     // End of variables declaration//GEN-END:variables
 }

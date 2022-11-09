@@ -3,10 +3,7 @@ package team6.client;
 import team6.client.gui.*;
 
 public class Client {
-    
     public static void main(String[] args) {
-        System.out.println("App is running ...");
-        
          /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -30,17 +27,13 @@ public class Client {
         }
         //</editor-fold>
         
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    HomeGUI homeGUI = new HomeGUI();
-                    homeGUI.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        try {
+            HomeGUI homeGUI = new HomeGUI();
+            
+        } catch (Exception e) {
+            System.out.println("App opening is unsuccessful!");
+            e.printStackTrace();
+        }
     }
 }
 
