@@ -50,6 +50,7 @@ public class HomeGUI extends javax.swing.JFrame {
 
         LoginGUI.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         LoginGUI.setTitle("Add Connection");
+        LoginGUI.setAlwaysOnTop(true);
         LoginGUI.setBounds(new java.awt.Rectangle(0, 0, 333, 200));
         LoginGUI.setResizable(false);
         LoginGUI.setSize(333, 200);
@@ -126,13 +127,6 @@ public class HomeGUI extends javax.swing.JFrame {
                 .addContainerGap(58, Short.MAX_VALUE))
         );
 
-        btnGroupCOM.add(btnCOM0);
-        btnGroupCOM.add(btnCOM1);
-        btnGroupCOM.add(btnCOM2);
-        btnGroupCOM.add(btnCOM3);
-        btnGroupCOM.add(btnCOM4);
-        btnGroupCOM.add(btnCOM5);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Home");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -148,7 +142,9 @@ public class HomeGUI extends javax.swing.JFrame {
 
         pnlCenter.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        btnGroupCOM.add(btnCOM0);
         btnCOM0.setText("COM0");
+        btnCOM0.setFocusPainted(false);
         btnCOM0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCOM0ActionPerformed(evt);
@@ -156,7 +152,9 @@ public class HomeGUI extends javax.swing.JFrame {
         });
         pnlCenter.add(btnCOM0, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 120));
 
+        btnGroupCOM.add(btnCOM1);
         btnCOM1.setText("COM1");
+        btnCOM1.setFocusPainted(false);
         btnCOM1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCOM1ActionPerformed(evt);
@@ -164,6 +162,7 @@ public class HomeGUI extends javax.swing.JFrame {
         });
         pnlCenter.add(btnCOM1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 120, 120));
 
+        btnGroupCOM.add(btnCOM2);
         btnCOM2.setText("COM2");
         btnCOM2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,6 +171,7 @@ public class HomeGUI extends javax.swing.JFrame {
         });
         pnlCenter.add(btnCOM2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, 120, 120));
 
+        btnGroupCOM.add(btnCOM3);
         btnCOM3.setText("COM3");
         btnCOM3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,6 +180,7 @@ public class HomeGUI extends javax.swing.JFrame {
         });
         pnlCenter.add(btnCOM3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 120, 120));
 
+        btnGroupCOM.add(btnCOM4);
         btnCOM4.setText("COM4");
         btnCOM4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,6 +189,7 @@ public class HomeGUI extends javax.swing.JFrame {
         });
         pnlCenter.add(btnCOM4, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, 120, 120));
 
+        btnGroupCOM.add(btnCOM5);
         btnCOM5.setText("COM5");
         btnCOM5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -268,6 +270,8 @@ public class HomeGUI extends javax.swing.JFrame {
         );
 
         btnAdd.setEnabled(false);
+        btnDisconnect.setEnabled(false);
+        btnControl.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -299,12 +303,14 @@ public class HomeGUI extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         LoginGUI.setLocationRelativeTo(this);
         LoginGUI.setVisible(true);
+        this.setEnabled(false);
         System.out.println("Login window is opening ...");
     }//GEN-LAST:event_btnAddActionPerformed
 
     // Event handling when closing LoginGUI
     private void LoginGUIWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_LoginGUIWindowClosing
         System.out.println("Login window is hiding ... ");
+        this.setEnabled(true);
         tfHost.setText("127.0.0.1");
         tfPort.setText("9888");
     }//GEN-LAST:event_LoginGUIWindowClosing
@@ -326,13 +332,20 @@ public class HomeGUI extends javax.swing.JFrame {
             socketHandler = new SocketHandler(host, port);
         }
         catch (NumberFormatException | IOException e) {
+            LoginGUI.setAlwaysOnTop(false);
             JOptionPane.showMessageDialog(rootPane, "IP/port is uncorrect!");
+            LoginGUI.setAlwaysOnTop(true);
             return;
         }  
         // if connected successfully
         controlGUI.set(currentSelection, new ControlGUI(socketHandler));
         controlGUI.get(currentSelection).setTitle(host + ":" + Integer.toString(port));
+        controlGUI.get(currentSelection).setTitle(host + ":" + Integer.toString(port));
         LoginGUI.dispose();
+        this.setEnabled(true);
+        btnAdd.setEnabled(false);
+        btnDisconnect.setEnabled(true);
+        btnControl.setEnabled(true);
     }//GEN-LAST:event_btnConnectActionPerformed
 
     private void btnControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControlActionPerformed
@@ -341,7 +354,7 @@ public class HomeGUI extends javax.swing.JFrame {
 
     // Event handlings when choosing one COM
     private void btnCOM0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM0ActionPerformed
-        System.out.println(evt.getActionCommand() + " selected");
+        System.out.println("COM0 selected");
         if (controlGUI.get(0) == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
@@ -356,7 +369,7 @@ public class HomeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCOM0ActionPerformed
     
     private void btnCOM1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM1ActionPerformed
-        System.out.println(evt.getActionCommand() + " selected");
+        System.out.println("COM1 selected");
         if (controlGUI.get(1) == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
@@ -371,7 +384,7 @@ public class HomeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCOM1ActionPerformed
 
     private void btnCOM2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM2ActionPerformed
-        System.out.println(evt.getActionCommand() + " selected");
+        System.out.println("COM2 selected");
         if (controlGUI.get(2) == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
@@ -386,7 +399,7 @@ public class HomeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCOM2ActionPerformed
 
     private void btnCOM3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM3ActionPerformed
-        System.out.println(evt.getActionCommand() + " selected");
+        System.out.println("COM3 selected");
         if (controlGUI.get(3) == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
@@ -401,7 +414,7 @@ public class HomeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCOM3ActionPerformed
 
     private void btnCOM4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM4ActionPerformed
-        System.out.println(evt.getActionCommand() + " selected");
+        System.out.println("COM4 selected");
         if (controlGUI.get(4) == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
@@ -416,7 +429,7 @@ public class HomeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCOM4ActionPerformed
 
     private void btnCOM5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM5ActionPerformed
-        System.out.println(evt.getActionCommand() + " selected");
+        System.out.println("COM5 selected");
         if (controlGUI.get(5) == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);

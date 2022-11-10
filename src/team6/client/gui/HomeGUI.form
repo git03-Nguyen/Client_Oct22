@@ -6,6 +6,7 @@
       <Properties>
         <Property name="defaultCloseOperation" type="int" value="2"/>
         <Property name="title" type="java.lang.String" value="Add Connection"/>
+        <Property name="alwaysOnTop" type="boolean" value="true"/>
         <Property name="bounds" type="java.awt.Rectangle" editor="org.netbeans.beaninfo.editors.RectangleEditor">
           <Rectangle value="[0, 0, 333, 200]"/>
         </Property>
@@ -124,9 +125,6 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.ButtonGroup" name="btnGroupCOM">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="btnGroupCOM.add(btnCOM0);&#xd;&#xa;btnGroupCOM.add(btnCOM1);&#xd;&#xa;btnGroupCOM.add(btnCOM2);&#xd;&#xa;btnGroupCOM.add(btnCOM3);&#xd;&#xa;btnGroupCOM.add(btnCOM4);&#xd;&#xa;btnGroupCOM.add(btnCOM5);&#xd;&#xa;&#xd;&#xa;"/>
-      </AuxValues>
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -254,7 +252,11 @@
           <SubComponents>
             <Component class="javax.swing.JToggleButton" name="btnCOM0">
               <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="btnGroupCOM"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="COM0"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCOM0ActionPerformed"/>
@@ -267,7 +269,11 @@
             </Component>
             <Component class="javax.swing.JToggleButton" name="btnCOM1">
               <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="btnGroupCOM"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="COM1"/>
+                <Property name="focusPainted" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCOM1ActionPerformed"/>
@@ -280,6 +286,9 @@
             </Component>
             <Component class="javax.swing.JToggleButton" name="btnCOM2">
               <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="btnGroupCOM"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="COM2"/>
               </Properties>
               <Events>
@@ -293,6 +302,9 @@
             </Component>
             <Component class="javax.swing.JToggleButton" name="btnCOM3">
               <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="btnGroupCOM"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="COM3"/>
               </Properties>
               <Events>
@@ -306,6 +318,9 @@
             </Component>
             <Component class="javax.swing.JToggleButton" name="btnCOM4">
               <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="btnGroupCOM"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="COM4"/>
               </Properties>
               <Events>
@@ -319,6 +334,9 @@
             </Component>
             <Component class="javax.swing.JToggleButton" name="btnCOM5">
               <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="btnGroupCOM"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="COM5"/>
               </Properties>
               <Events>
@@ -350,6 +368,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDisconnectActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="btnDisconnect.setEnabled(false);&#xd;&#xa;"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator3">
         </Component>
@@ -360,6 +381,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnControlActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="btnControl.setEnabled(false);  "/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
