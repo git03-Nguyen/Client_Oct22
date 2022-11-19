@@ -1,9 +1,24 @@
 package team6.client.gui;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import team6.client.handler.*;
 import team6.client.socket.SocketHandler;
 
 public class ControlGUI extends javax.swing.JFrame {
     public SocketHandler socketHandler;
+    
+    private Applications applications;
+    private Keylogger keylogger;
+    private Monitor monitor;
+    private Processes processes;
+    private SystemCtrl systemCtrl;
 
     public ControlGUI(SocketHandler socketHandler) {
         initComponents();
@@ -42,17 +57,20 @@ public class ControlGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtSystemInfo = new javax.swing.JTextArea();
         pnlSystemCmd = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
+        btnRestart = new javax.swing.JButton();
+        btnShutdown = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+        });
+
+        tabMain.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabMainStateChanged(evt);
             }
         });
 
@@ -132,6 +150,12 @@ public class ControlGUI extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(tblApp);
+        if (tblApp.getColumnModel().getColumnCount() > 0) {
+            tblApp.getColumnModel().getColumn(0).setHeaderValue("UID");
+            tblApp.getColumnModel().getColumn(1).setHeaderValue("Name");
+            tblApp.getColumnModel().getColumn(2).setHeaderValue("CPU");
+            tblApp.getColumnModel().getColumn(3).setHeaderValue("Memory");
+        }
 
         btnEndApp.setText("End application");
 
@@ -281,15 +305,16 @@ public class ControlGUI extends javax.swing.JFrame {
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Log out");
+        btnLogOut.setText("Log out");
 
-        jButton2.setText("Restart");
+        btnRestart.setText("Restart");
 
-        jButton3.setText("Shut down");
-
-        jButton4.setText("Disconnect");
-
-        jButton5.setText("Access CMD");
+        btnShutdown.setText("Shut down");
+        btnShutdown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShutdownActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlSystemCmdLayout = new javax.swing.GroupLayout(pnlSystemCmd);
         pnlSystemCmd.setLayout(pnlSystemCmdLayout);
@@ -297,29 +322,23 @@ public class ControlGUI extends javax.swing.JFrame {
             pnlSystemCmdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSystemCmdLayout.createSequentialGroup()
                 .addGap(84, 84, 84)
-                .addGroup(pnlSystemCmdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlSystemCmdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING)))
+                .addGroup(pnlSystemCmdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnShutdown, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                    .addGroup(pnlSystemCmdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnRestart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLogOut, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)))
                 .addContainerGap(95, Short.MAX_VALUE))
         );
         pnlSystemCmdLayout.setVerticalGroup(
             pnlSystemCmdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSystemCmdLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton5)
+                .addGap(151, 151, 151)
+                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnRestart, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addGap(31, 31, 31)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                .addComponent(btnShutdown, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlSystemLayout = new javax.swing.GroupLayout(pnlSystem);
@@ -351,28 +370,98 @@ public class ControlGUI extends javax.swing.JFrame {
         );
 
         pack();
+	setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        this.setVisible(false);
+        
     }//GEN-LAST:event_formWindowClosing
+
+    private void tabMainStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabMainStateChanged
+//        try {
+//            socketHandler.restart();
+//        } catch (IOException ex) {
+//            Logger.getLogger(ControlGUI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
+        int selectedTab = ((javax.swing.JTabbedPane)evt.getSource()).getSelectedIndex();
+        System.out.println("Tab changed to: " + selectedTab);
+        
+        Thread th = null;
+        
+        switch (selectedTab) {
+            case 0:
+                System.out.println("Processsssssssss");
+                break;
+            case 1:
+                System.out.println("Applicationssssss");
+                break;
+            case 2:
+                System.out.println("Monitorrrrrrr");
+                monitor = new Monitor(socketHandler);
+                System.out.println("About to receive image");
+                th = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Image image = socketHandler.receiveImage();
+                            System.out.println("Starting drawing image");
+                            image = image.getScaledInstance(pnlCenterMonitor.getWidth(),pnlCenterMonitor.getHeight(),Image.SCALE_FAST);
+                            Graphics graphics = pnlCenterMonitor.getGraphics();
+                            graphics.drawImage(image, 0, 0, pnlCenterMonitor.getWidth(), pnlCenterMonitor.getHeight(), pnlCenterMonitor);
+                        } catch (IOException ex) {
+                            Logger.getLogger(ControlGUI.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
+                    }
+                };
+                th.start();
+                
+                break;
+            case 3:
+                System.out.println("Keylogginggg");
+                break;
+            case 4:
+                System.out.println("System Controllll");
+                systemCtrl = new SystemCtrl(socketHandler);
+                
+                th = new Thread() {
+                    @Override
+                    public void run() {
+                        String info = new String(socketHandler.receive());
+                        txtSystemInfo.setText(info);
+                    }
+                }; 
+                th.start();
+                
+                break;
+        }
+    }//GEN-LAST:event_tabMainStateChanged
+
+    private void btnShutdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShutdownActionPerformed
+        Thread th = new Thread() {
+            @Override
+            public void run() {
+                systemCtrl.shutDown();
+            }
+        }; 
+        th.start();
+    }//GEN-LAST:event_btnShutdownActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChangeDir;
     private javax.swing.JButton btnClearKey;
     private javax.swing.JButton btnEndApp;
     private javax.swing.JButton btnEndProc;
+    private javax.swing.JButton btnLogOut;
+    private javax.swing.JButton btnRestart;
     private javax.swing.JButton btnSaveApp;
     private javax.swing.JButton btnSaveKey;
     private javax.swing.JButton btnSaveMonitor;
     private javax.swing.JButton btnSaveProc;
+    private javax.swing.JButton btnShutdown;
     private javax.swing.JButton btnStartApp;
     private javax.swing.JButton btnStartProc;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

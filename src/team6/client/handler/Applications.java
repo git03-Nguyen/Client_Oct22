@@ -1,11 +1,27 @@
 package team6.client.handler;
 
-import team6.client.socket.SocketHandler;
-
-public class Applications extends AbstractHandler {
+public class Applications{
     
-    public Applications(SocketHandler socketHandler) {
-        super(socketHandler);
+    public Applications(){
     }
     
+    public String initMessage(){
+        return "<APP>$<>$<>";
+    }
+    
+    public String getMessage(){
+        return "<>$<GET>$<>";
+    }
+    
+    public String killMessage(int pid){
+        return ("<>$<KILL>$<" + String.valueOf(pid) + ">");
+    }
+    
+    public String startNameMessage(String name){
+        return ("<>$<START-NAME>$<" + name + ">");
+    }
+    
+    public String startIDMessage(String name){
+        return ("<>$<START-ID>$<" + name + ">");
+    }
 }

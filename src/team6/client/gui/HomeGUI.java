@@ -7,12 +7,12 @@ import javax.swing.JOptionPane;
 import team6.client.socket.SocketHandler;
 
 public class HomeGUI extends javax.swing.JFrame {
-    private List<ControlGUI> controlGUI;
+    private ControlGUI[] controlGUI;
     private int currentSelection;
 
     public HomeGUI() {
         initComponents();
-        initControlGUI();
+        controlGUI = new ControlGUI[] {null, null, null, null, null, null};
     }
 
     /**
@@ -291,13 +291,6 @@ public class HomeGUI extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void initControlGUI() {
-        controlGUI = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            controlGUI.add(null);
-        }
-    }
     
     // Event handlings when click btnAdd
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -318,6 +311,13 @@ public class HomeGUI extends javax.swing.JFrame {
     // Event handling when closing HomeGUI
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // Disconnect all
+        for (int i = 0; i< 6;i++) {
+            if (controlGUI[i] == null) continue;
+            controlGUI[i].socketHandler.send("<DISC>$<>$<>");
+            controlGUI[i].socketHandler.close();
+            controlGUI[i].dispose();
+            controlGUI[i] = null;
+        }
         System.out.println("HomeGUI is closing ....");        
     }//GEN-LAST:event_formWindowClosing
 
@@ -329,6 +329,17 @@ public class HomeGUI extends javax.swing.JFrame {
         try {
             host = tfHost.getText();
             port = Integer.parseInt(tfPort.getText());
+            
+            for (int i = 0; i < 6; i++) {
+                ControlGUI cGUI = controlGUI[i];
+                if (cGUI != null && cGUI.socketHandler.getHost().equals(host) && cGUI.socketHandler.getPort() == port) {
+                    LoginGUI.setAlwaysOnTop(false);
+                    JOptionPane.showMessageDialog(rootPane, "IP/port is existed at COM" + i + "!");
+                    LoginGUI.setAlwaysOnTop(true);
+                    return;
+                }   
+            }
+            
             socketHandler = new SocketHandler(host, port);
         }
         catch (NumberFormatException | IOException e) {
@@ -338,28 +349,28 @@ public class HomeGUI extends javax.swing.JFrame {
             return;
         }  
         // if connected successfully
-        controlGUI.set(currentSelection, new ControlGUI(socketHandler));
-        controlGUI.get(currentSelection).setTitle(host + ":" + Integer.toString(port));
-        controlGUI.get(currentSelection).setTitle(host + ":" + Integer.toString(port));
+        controlGUI[currentSelection] = new ControlGUI(socketHandler);
+        controlGUI[currentSelection].setTitle(host + ":" + Integer.toString(port));
         LoginGUI.dispose();
         this.setEnabled(true);
+        this.setVisible(true);
         btnAdd.setEnabled(false);
         btnDisconnect.setEnabled(true);
         btnControl.setEnabled(true);
     }//GEN-LAST:event_btnConnectActionPerformed
 
     private void btnControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControlActionPerformed
-        controlGUI.get(currentSelection).setVisible(true);
+        controlGUI[currentSelection].setVisible(true);
     }//GEN-LAST:event_btnControlActionPerformed
 
     // Event handlings when choosing one COM
     private void btnCOM0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM0ActionPerformed
         System.out.println("COM0 selected");
-        if (controlGUI.get(0) == null) {
+        currentSelection = 0;
+        if (controlGUI[0] == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
             btnDisconnect.setEnabled(false);
-            currentSelection = 0;
         }
         else {
             btnAdd.setEnabled(false);
@@ -370,11 +381,11 @@ public class HomeGUI extends javax.swing.JFrame {
     
     private void btnCOM1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM1ActionPerformed
         System.out.println("COM1 selected");
-        if (controlGUI.get(1) == null) {
+        currentSelection = 1;
+        if (controlGUI[1] == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
             btnDisconnect.setEnabled(false);
-            currentSelection = 1;
         }
         else {
             btnAdd.setEnabled(false);
@@ -385,11 +396,11 @@ public class HomeGUI extends javax.swing.JFrame {
 
     private void btnCOM2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM2ActionPerformed
         System.out.println("COM2 selected");
-        if (controlGUI.get(2) == null) {
+        currentSelection = 2;
+        if (controlGUI[2] == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
             btnDisconnect.setEnabled(false);
-            currentSelection = 2;
         }
         else {
             btnAdd.setEnabled(false);
@@ -400,11 +411,11 @@ public class HomeGUI extends javax.swing.JFrame {
 
     private void btnCOM3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM3ActionPerformed
         System.out.println("COM3 selected");
-        if (controlGUI.get(3) == null) {
+         currentSelection = 3;
+        if (controlGUI[3] == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
             btnDisconnect.setEnabled(false);
-            currentSelection = 3;
         }
         else {
             btnAdd.setEnabled(false);
@@ -415,11 +426,11 @@ public class HomeGUI extends javax.swing.JFrame {
 
     private void btnCOM4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM4ActionPerformed
         System.out.println("COM4 selected");
-        if (controlGUI.get(4) == null) {
+        currentSelection = 4;
+        if (controlGUI[4] == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
             btnDisconnect.setEnabled(false);
-            currentSelection = 4;
         }
         else {
             btnAdd.setEnabled(false);
@@ -430,11 +441,11 @@ public class HomeGUI extends javax.swing.JFrame {
 
     private void btnCOM5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOM5ActionPerformed
         System.out.println("COM5 selected");
-        if (controlGUI.get(5) == null) {
+        currentSelection = 5;
+        if (controlGUI[5] == null) {
             btnAdd.setEnabled(true);
             btnControl.setEnabled(false);
             btnDisconnect.setEnabled(false);
-            currentSelection = 5;
         }
         else {
             btnAdd.setEnabled(false);
@@ -445,10 +456,13 @@ public class HomeGUI extends javax.swing.JFrame {
 
     // Event handling when clicking btnDisconnect
     private void btnDisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisconnectActionPerformed
-        controlGUI.get(currentSelection).socketHandler.send("<DISC>$<>$<>");
-        controlGUI.get(currentSelection).socketHandler.close();
-        controlGUI.get(currentSelection).dispose();
-        controlGUI.set(currentSelection, null);
+        controlGUI[currentSelection].socketHandler.send("<DISC>$<>$<>");
+        controlGUI[currentSelection].socketHandler.close();
+        controlGUI[currentSelection].dispose();
+        controlGUI[currentSelection] = null;
+        btnDisconnect.setEnabled(false);
+        btnAdd.setEnabled(true);
+        btnControl.setEnabled(false);
     }//GEN-LAST:event_btnDisconnectActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

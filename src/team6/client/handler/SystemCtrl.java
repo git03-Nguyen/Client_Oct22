@@ -2,22 +2,27 @@ package team6.client.handler;
 
 import team6.client.socket.SocketHandler;
 
-public class SystemCtrl extends AbstractHandler {
+public class SystemCtrl {
     SocketHandler socketHandler;
 
     public SystemCtrl(SocketHandler socketHandler) {
-        super(socketHandler);
+        this.socketHandler = socketHandler;
+        getSystemInfo();
     }
     
-    private void shutDown() {
-        socketHandler.send("<SHUT>$<>");
+    public void getSystemInfo() {
+        socketHandler.send("<SYSTEM>$<GET>$<>");
     }
     
-    private void restart() {
-        socketHandler.send("<RES>$<>");
+    public void shutDown() {
+        socketHandler.send("<SYSTEM>$<SHUT>$<>");
     }
     
-    private void logOut() {
-        socketHandler.send("<LGOUT>$<>");
+    public void restart() {
+        socketHandler.send("<SYSTEM>$<RES>$<>");
+    }
+    
+    public void logOut() {
+        socketHandler.send("<SYSTEM>$<LOGOUT>$<>");
     }
 }

@@ -2,10 +2,7 @@ package team6.client.handler;
 
 import team6.client.socket.SocketHandler;
 
-public class Keylogger extends AbstractHandler {
+public class Keylogger {
     
-    public Keylogger(SocketHandler socketHandler) {
-        super(socketHandler);
-    }
     
 }
