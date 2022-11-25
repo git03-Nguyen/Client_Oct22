@@ -1,10 +1,10 @@
 package team6.client.gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import team6.client.socket.SocketHandler;
 
 public class HomeGUI extends javax.swing.JFrame {
     private ControlGUI[] controlGUI;
@@ -52,6 +52,7 @@ public class HomeGUI extends javax.swing.JFrame {
         LoginGUI.setTitle("Add Connection");
         LoginGUI.setAlwaysOnTop(true);
         LoginGUI.setBounds(new java.awt.Rectangle(0, 0, 333, 200));
+        LoginGUI.setFocusable(false);
         LoginGUI.setResizable(false);
         LoginGUI.setSize(333, 200);
         LoginGUI.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -129,6 +130,7 @@ public class HomeGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Home");
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -313,8 +315,8 @@ public class HomeGUI extends javax.swing.JFrame {
         // Disconnect all
         for (int i = 0; i< 6;i++) {
             if (controlGUI[i] == null) continue;
-            controlGUI[i].socketHandler.send("<DISC>$<>$<>");
-            controlGUI[i].socketHandler.close();
+            controlGUI[i].disconnect();
+            System.out.println("COM" + i + " disconnected");
             controlGUI[i].dispose();
             controlGUI[i] = null;
         }
@@ -323,7 +325,7 @@ public class HomeGUI extends javax.swing.JFrame {
 
     // Event handling when clicking btnConnect on LoginGUI
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
-        SocketHandler socketHandler; 
+        Socket socket = null;
         String host;
         int port;
         try {
@@ -332,7 +334,8 @@ public class HomeGUI extends javax.swing.JFrame {
             
             for (int i = 0; i < 6; i++) {
                 ControlGUI cGUI = controlGUI[i];
-                if (cGUI != null && cGUI.socketHandler.getHost().equals(host) && cGUI.socketHandler.getPort() == port) {
+                
+                if (cGUI != null && cGUI.socket.getInetAddress().toString().equals("/" + host) && cGUI.socket.getPort() == port) {
                     LoginGUI.setAlwaysOnTop(false);
                     JOptionPane.showMessageDialog(rootPane, "IP/port is existed at COM" + i + "!");
                     LoginGUI.setAlwaysOnTop(true);
@@ -340,7 +343,7 @@ public class HomeGUI extends javax.swing.JFrame {
                 }   
             }
             
-            socketHandler = new SocketHandler(host, port);
+            socket = new Socket(host, port);
         }
         catch (NumberFormatException | IOException e) {
             LoginGUI.setAlwaysOnTop(false);
@@ -348,9 +351,14 @@ public class HomeGUI extends javax.swing.JFrame {
             LoginGUI.setAlwaysOnTop(true);
             return;
         }  
-        // if connected successfully
-        controlGUI[currentSelection] = new ControlGUI(socketHandler);
+        try {
+            // if connected successfully
+            controlGUI[currentSelection] = new ControlGUI(socket);
+        } catch (IOException ex) {
+            Logger.getLogger(HomeGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         controlGUI[currentSelection].setTitle(host + ":" + Integer.toString(port));
+        
         LoginGUI.dispose();
         this.setEnabled(true);
         this.setVisible(true);
@@ -360,6 +368,13 @@ public class HomeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConnectActionPerformed
 
     private void btnControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControlActionPerformed
+        if (controlGUI[currentSelection].socket.isClosed()) {
+            btnDisconnect.doClick();
+            return;
+        }
+        if (controlGUI[currentSelection].isVisible()) return;
+        controlGUI[currentSelection].setSelectedTab(0);
+        controlGUI[currentSelection].setLocationRelativeTo(this);
         controlGUI[currentSelection].setVisible(true);
     }//GEN-LAST:event_btnControlActionPerformed
 
@@ -456,8 +471,7 @@ public class HomeGUI extends javax.swing.JFrame {
 
     // Event handling when clicking btnDisconnect
     private void btnDisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisconnectActionPerformed
-        controlGUI[currentSelection].socketHandler.send("<DISC>$<>$<>");
-        controlGUI[currentSelection].socketHandler.close();
+        controlGUI[currentSelection].disconnect();
         controlGUI[currentSelection].dispose();
         controlGUI[currentSelection] = null;
         btnDisconnect.setEnabled(false);
